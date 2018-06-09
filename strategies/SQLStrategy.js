@@ -30,9 +30,6 @@ if(isDevelopment) {
 }
 
 module.exports = class SQLStrategy {
-	if(!isDevelopment){
-		console.log('Add one of knex supported packages using npm install and remove this logging');
-	}
   constructor(config = defaultConfig) {
     this.knex = Knex(config);
   }
