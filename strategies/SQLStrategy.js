@@ -1,14 +1,38 @@
 const Knex = require('knex');
 
-const defaultConfig = {
-  dialect: 'sqlite3',
-  useNullAsDefault: true,
-  connection: {
-    filename: './db.sqlite3',
-  },
-};
+const {
+  SQL_HOST,
+  SQL_USER,
+  SQL_PASS,
+  SQL_DB,
+  NODE_ENV,
+} = process.env;
+
+const isDevelopment = NODE_ENV !== 'production';
+if(isDevelopment) {
+	const defaultConfig = {
+	  dialect: 'sqlite3',
+	  useNullAsDefault: true,
+	  connection: {
+		filename: './db.sqlite3',
+	  },
+	};
+} else {
+	const defaultConfig = {
+		client: 'mysql',
+		connection: {
+			host: SQL_HOST,
+			user: SQL_USER,
+			password: SQL_PASS,
+			database: SQL_DB
+		}
+	}
+}
 
 module.exports = class SQLStrategy {
+	if(!isDevelopment){
+		console.log('Add one of knex supported packages using npm install and remove this logging');
+	}
   constructor(config = defaultConfig) {
     this.knex = Knex(config);
   }
